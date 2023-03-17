@@ -12,7 +12,7 @@ return 0;
 
 std::string isprime(long numb)
 {
-	for (int i =2; i<numb/2; i++)
+	for (int i =2; i<=numb/2; i++)
 	{
 		if ( numb % i == 0 ) 
 		{
