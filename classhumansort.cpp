@@ -11,10 +11,23 @@ class human
 		name = "";
 		age = 0;
 	}
-	human(int _age , std::string _name)
+	human(int age , std::string name)
+	{
+		this->age = age;
+		this->name = name;
+	}
+	human(std::string _name,int _age )
 	{
 		age = _age;
 		name = _name;
+	}
+	bool human operator > (const human & other)
+	{
+		return (this.age > other.age)
+	}
+	bool human operator < (const human & other)
+	{
+		return (this.age < other.age)
 	}
 	int get_age()
 	{
@@ -30,7 +43,8 @@ void bubblesort(human* arr,int n);
 
 int main() 
 {
-    human anna (28, "Anna");
+
+    human anna ("Anna", 26);
     human albert ( 23, "Albert" );
     human tigran (33, "Tigran");
     human samvel (41, "Samvel");  
@@ -53,7 +67,7 @@ void bubblesort(human* arr,const int SIZE)
 	{
 		for (int j = 0; j < SIZE-1; j++)
 		{
-			if (arr[j].get_age() > arr[j+1].get_age())
+			if (arr[j] > arr[j+1])
 			{   
 				tmp = arr[j];
 				arr[j] = arr[j+1];
