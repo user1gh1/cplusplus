@@ -21,13 +21,13 @@ class human
 		age = _age;
 		name = _name;
 	}
-	bool human operator > (const human & other)
+	bool operator > (const human & other)
 	{
-		return (this.age > other.age)
+		return (this->age > other.age);
 	}
-	bool human operator < (const human & other)
+	bool operator < (const human & other)
 	{
-		return (this.age < other.age)
+		return (this->age < other.age);
 	}
 	int get_age()
 	{
