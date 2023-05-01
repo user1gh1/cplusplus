@@ -38,6 +38,8 @@ public:
 			void print();
 			//index start from 0
 			T& operator[](const int index);
+			void bubble_sort();
+			void insert_sort();
 };
 template<typename T>
 //constructor
@@ -225,4 +227,54 @@ T& DoubleList<T>::operator[](const int index)
 		Headpt = Headpt->next;
 	}
 	return Headpt->data;
+}
+template<typename T>
+void DoubleList<T>::bubble_sort()
+{
+	if (size <= 1)
+	{
+		return;
+	}
+	for (int i = 0; i < size; i++)
+	{
+		Node* k = head;
+		while(k->next != nullptr)
+		{
+			if(k->data > k->next->data)
+			{
+				T temp = k->data;
+				k->data = k->next->data;
+				k->next->data = temp;
+			}
+			k = k->next;
+		}
+	}
+}
+template<typename T>
+void DoubleList<T>::insert_sort()
+{
+	if (size <= 1)
+	{
+		return;
+	}
+	Node* k = head->next;
+	for (int i = 1; i < size; i++)
+	{
+		T temp = k->data;
+		Node* p = k->prev;
+		while ( p !=nullptr && p->data > temp)
+		{
+			p->next->data = p->data;
+			p = p->prev;
+		}
+		if (p == nullptr)
+		{
+			head->data = temp;
+		}
+		else
+		{
+			p->next->data = temp;
+		}
+			k = k->next;
+	}
 }

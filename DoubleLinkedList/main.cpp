@@ -11,20 +11,24 @@ int main()
 	F.push_back(16);
 	F.push_back(17);
 	F.push_front(11);
-
 	F.print();
 	std::cout << "size is " << F.get_size() << '\n';
 
-	F.pop_back();
-	F.pop_back();
 	F.pop_back();
 	F.pop_front();
 	F.insert(99,2);
 	F[2]=21;
+	F.push_back(1);
 	F.print();
 	//check reverse works
+	std::cout << '\n';
 	F.reverse();
-	std::cout << "size is " << F.get_size() << '\n';
 	F.print();
+	std::cout << "size is " << F.get_size() << '\n';
+	//check sorts works
+	//F.bubble_sort();
+	F.insert_sort();
+	F.print();
+	std::cout << "size is " << F.get_size() << '\n';
 	return 0;	
 }
