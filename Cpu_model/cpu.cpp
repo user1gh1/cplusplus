@@ -2,27 +2,32 @@
 #include <vector>
 #include <bitset>
 
-class Hdd
+class Reg
 {
 private:
-	std::vector<int> hdd;
+	std::vector<int> reg_mem;
 public:
-	Hdd() 
+	Reg()
 	{
-		hdd.resize(32);
+		reg_mem.resize(6);
 	}
-	void writeMemory(int address, int data) 
+	void write_reg(int address, int data) 
 	{
-	    hdd[address] = data;
+	    reg_mem[address] = data;
+	}
+	int read_reg(int address)
+	{
+		return reg_mem[address];
 	}
 	void print()
 	{
-		for(int i = 0; i < hdd.size(); i++)
+		for(int i = 0; i < reg_mem.size(); i++)
 		{
-			std::cout << hdd[i] << ' ';
+			std::cout << reg_mem[i] << ' ';
 		}
 		std::cout << std::endl;
 	}
+
 };
 
 class Alu 
@@ -71,7 +76,7 @@ private:
 	std::vector<int> ozu;
 public:
 	Ram() {
-		ozu.resize(32); // 11111 bytes
+		ozu.resize(512); // 11111 bytes
     }
 
     int read(int address) {
@@ -81,6 +86,14 @@ public:
     void write(int address, int data) {
         ozu[address] = data;
     }
+	void print()
+	{
+		for(int i = 0; i < ozu.size(); i++)
+		{
+			std::cout << ozu[i] << ' ';
+		}
+		std::cout << "this ozu" << std::endl;
+	}
 };
 
 class Cpu
@@ -88,56 +101,61 @@ class Cpu
 private:
 	Alu alu;
 	Ram ram;
-	Hdd hdd;
+	Reg reg;
 	int tasks; 
-	int inst;
-	int hddsize;
+	int code;
 public:
 	Cpu()
 	{
 		tasks = 0;
-		inst = 0;
+		code = 0;
 	}
 	
 	void fetch() 
 	{
-		inst = ram.read(tasks-1);
+		code = ram.read(tasks-1);
+		reg.write_reg(0, (code >> 27) & 0b1111 ); //	  4 bits Opcode
+		reg.write_reg(1, (code >> 18) & 0b111111111 ); // 9 bits Ram_save pointer 
+		reg.write_reg(2, (code >> 9) & 0b111111111 ); //  9 bits Pointer_first argument
+		reg.write_reg(3, (code & 0b111111111) );//		  9 bits Pointer_second argument
+		reg.write_reg(4, (reg.read_reg(2)) ); //		  Data first argument
+		reg.write_reg(5, (reg.read_reg(3)) ); //		  Data second argument
 	}
 
 	void decode()
 	{
-		int opcode = (inst >> 27) & 0b1111; // 4 bits (16commands)
-		int hddpointer = (inst >> 22) & 0b11111; // 5 bits (32sizehdd)
-		int op1 = (inst >> 11) & 0x7FF; // 11 bits (number range2047 -2047)
-		int op2 = inst & 0x7FF; // 11 bits (number range2047 -2047)
+		int opcode = reg.read_reg(0);
+		int rampointer = reg.read_reg(1);
+		int op1 = reg.read_reg(4); 
+		int op2 = reg.read_reg(5);
 		switch(opcode)
 		{
 			case 1: //set 
-				hdd.writeMemory(hddpointer,op1);
+				ram.write(rampointer,op1);
 				break;
 			case 2:
-				hdd.writeMemory(hddpointer, alu.add(op1,op2));
+				ram.write(rampointer, alu.add(op1,op2));
 				break;
 			case 3:
-				hdd.writeMemory(hddpointer, alu.subtract(op1,op2));
+				ram.write(rampointer, alu.subtract(op1,op2));
 				break;
 			case 4:		
-				hdd.writeMemory(hddpointer, alu.multiply(op1,op2));
+				ram.write(rampointer, alu.multiply(op1,op2));
 				break;
 			case 5:
-				hdd.writeMemory(hddpointer, alu.divide(op1,op2));
+				ram.write(rampointer, alu.divide(op1,op2));
 				break;
 			case 6:
-				hdd.writeMemory(hddpointer, alu.bitwiseOr(op1,op2));
+				ram.write(rampointer, alu.bitwiseOr(op1,op2));
 				break;
 			case 7:
-				hdd.writeMemory(hddpointer, alu.bitwiseAnd(op1,op2));
+				ram.write(rampointer, alu.bitwiseAnd(op1,op2));
 				break;
 			case 8:
-				hdd.writeMemory(hddpointer, alu.bitwiseXor(op1,op2));
+				ram.write(rampointer, alu.bitwiseXor(op1,op2));
 				break;
 			case 9:
-				hdd.writeMemory(hddpointer, alu.bitwiseNot(op1));
+				ram.write(rampointer, alu.bitwiseNot(op1));
 				break;
 			default:
 				break;
@@ -161,16 +179,20 @@ public:
 			tasks++;
         }
     }
-	void hddprint()
+	void print()
 	{
-		hdd.print();
+		std::cout << "this Reg " << std::endl;
+		reg.print();
+		std::cout << std::endl;
+		ram.print();
+
 	}
 };
 
 int main() {
 	Cpu cpu;
-	cpu.loadProgram({266037370,274425978,1209755770});
+	cpu.loadProgram({135004159});
 	cpu.exe();
-	cpu.hddprint();
+	cpu.print();
     return 0;
 }
