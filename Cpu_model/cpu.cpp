@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <bitset>
+#include <cassert>
 
 class Reg
 {
@@ -13,10 +14,14 @@ public:
 	}
 	void write_reg(int address, int data) 
 	{
+		//be care , Don't give index Out of Range
+		assert ((address >= 0) && (address < reg_mem.size() ));
 	    reg_mem[address] = data;
 	}
 	int read_reg(int address)
 	{
+		//be care , Don't give index Out of Range
+		assert ((address >= 0) && (address < reg_mem.size() ));
 		return reg_mem[address];
 	}
 	void print()
@@ -76,14 +81,18 @@ private:
 	std::vector<int> ozu;
 public:
 	Ram() {
-		ozu.resize(512); // 11111 bytes
+		ozu.resize(512); // for avoid to rewrite instruction code use 0-255 and 256-512 for data
     }
 
     int read(int address) {
+		//be care , Don't give index Out of Range
+		assert ((address >= 0) && (address < ozu.size() ));
         return ozu[address];
     }
 
     void write(int address, int data) {
+		//be care , Don't give index Out of Range
+		assert ((address >= 0) && (address < ozu.size() ));
         ozu[address] = data;
     }
 	void print()
@@ -174,6 +183,9 @@ public:
 
 	void loadProgram(std::vector<int> program) 
 	{
+		//be care , Don't give programs more then memory place
+		assert (program.size() < 512);
+
 		for (int i = 0; i < program.size(); i++) {
             ram.write(i, program[i]);
 			tasks++;
