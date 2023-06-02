@@ -1,0 +1,50 @@
+$date
+	Fri Jun  2 13:18:01 2023
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module LED_Controller_tb $end
+$var wire 1 ! led $end
+$var reg 1 " bright_down $end
+$var reg 1 # bright_up $end
+$var reg 1 $ reset $end
+$scope module DUT $end
+$var wire 1 " bright_down $end
+$var wire 1 # bright_up $end
+$var wire 1 $ reset $end
+$var reg 3 % brightness [2:0] $end
+$var reg 1 ! led $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+b0 %
+1$
+x#
+x"
+0!
+$end
+#10
+0$
+#30
+1!
+b111 %
+1#
+#50
+0#
+#70
+0!
+b0 %
+1"
+#90
+0"
+#110
+1!
+b111 %
+1#
+#130
