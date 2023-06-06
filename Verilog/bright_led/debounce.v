@@ -10,7 +10,7 @@ reg  [17:0] counter;
 wire [17:0] counter_nxt;
 wire full;
 
-assign full = (counter == 18'd2);
+assign full = (counter == 18'd25);
 assign counter_nxt = (button) ? (~full ? counter + {{17{1'b0}}, 1'b1} : 9'd250000) : {18{1'b0}};
 assign button_out = full;
 

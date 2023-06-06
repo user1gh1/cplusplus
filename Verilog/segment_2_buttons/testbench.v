@@ -28,7 +28,7 @@ module segment_display_tb;
 
 
     #15 button_plus = 1; 
-    #5 button_plus = 0;   
+    #50 button_plus = 0;   
     #15 button_plus = 1; 
     #5 button_plus = 0;   
     #10 button_minus = 1; 
