@@ -3,13 +3,11 @@ name: GithubActions-basic
 on:
   push:
     branches: 
-      - master
+      - main
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
     - name: Print hello
-      run : echo "hello world"
-            echo "hello world"
-    
+      run : echo "hello world" 
