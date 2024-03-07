@@ -1,0 +1,20 @@
+name: GithubActions-basic
+
+on:
+  push:
+    branches: 
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Print hello
+      run : echo "hello world"
+      
+  test2:
+    runs-on: ubuntu-latest
+    needs: [test]
+    steps:
+    - name: Print second hello
+      run : echo "hello second world" 
